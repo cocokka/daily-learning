@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Interface</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .container { display: flex; flex-direction: column; gap: 20px; }
+        textarea { width: 100%; height: 100px; padding: 10px; }
+        button { padding: 10px 15px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+        .response { padding: 15px; border: 1px solid #ddd; border-radius: 5px; min-height: 100px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI Chat Interface</h1>
+        <textarea id="message" placeholder="Enter your message here..."></textarea>
+        <div>
+            <button onclick="sendToAI()">Send to /ai</button>
+            <button onclick="sendToChat()">Send to /chat</button>
+            <button onclick="startStreamChat()">Start Stream Chat</button>
+        </div>
+        <div class="response" id="response"></div>
+        <div class="response" id="streamResponse"></div>
+    </div>
+
+    <script>
+        async function sendToAI() {
+            const message = document.getElementById('message').value;
+            const responseElement = document.getElementById('response');
+            
+            try {
+                const response = await fetch(`/ai/ai?message=${encodeURIComponent(message)}`);
+                const data = await response.text();
+                responseElement.textContent = data;
+            } catch (error) {
+                responseElement.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        async function sendToChat() {
+            const message = document.getElementById('message').value;
+            const responseElement = document.getElementById('response');
+            
+            try {
+                const response = await fetch(`/ai/movie/composer?message=${encodeURIComponent(message)}`);
+                const data = await response.text();
+                responseElement.textContent = data;
+            } catch (error) {
+                responseElement.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        function startStreamChat() {
+            const message = document.getElementById('message').value;
+            const streamElement = document.getElementById('streamResponse');
+            streamElement.textContent = '';
+            
+            const eventSource = new EventSource(`/ai/streamChat?message=${encodeURIComponent(message)}`);
+            
+            eventSource.onmessage = function(event) {
+                streamElement.textContent += event.data;
+            };
+            
+            eventSource.onerror = function() {
+                eventSource.close();
+            };
+        }
+    </script>
+</body>
+</html>

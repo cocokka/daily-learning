@@ -1,0 +1,26 @@
+services:
+  jrebel-license-server:
+    image: jrebel-license-server:latest
+    container_name: jrebel-license-server
+    ports:
+      - "18080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-prod}
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - daily-learning-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
+
+networks:
+  daily-learning-network:
+    driver: bridge

@@ -1,0 +1,69 @@
+spring:
+  application:
+    name: ocr-platform
+  webflux:
+    multipart:
+      max-parts: 1
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306/ocr_db
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:123456}
+    pool:
+      initial-size: 10
+      max-size: 50
+  codec:
+    max-in-memory-size: 10MB
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 5s
+  threads:
+    virtual:
+      enabled: true
+
+app:
+  snowflake:
+    worker-id: ${SNOWFLAKE_WORKER_ID:1}
+    datacenter-id: ${SNOWFLAKE_DATACENTER_ID:1}
+
+storage:
+  endpoint: ${STORAGE_ENDPOINT:http://localhost:9000}
+  access-key: ${STORAGE_ACCESS_KEY:XnT9CvD30GpwUckByKaQ}
+  secret-key: ${STORAGE_SECRET_KEY:SHjVvsQMk1c84FUCPIzB9KLwbeuZiXWqlmtr362x}
+  bucket: ${STORAGE_BUCKET:ocr}
+  region: ${STORAGE_REGION:us-east-1}
+
+tesseract:
+  data-path: ${TESSERACT_DATA_PATH:/usr/share/tessdata}
+  languages: chi_sim+eng
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  tracing:
+    sampling:
+      probability: 1.0
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+
+server:
+  port: 8080
+  netty:
+    connection-timeout: 2s
+    idle-timeout: 30s
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  level:
+    com.demo.dl.ocr.platform: INFO
+    org.springframework.data.r2dbc: DEBUG

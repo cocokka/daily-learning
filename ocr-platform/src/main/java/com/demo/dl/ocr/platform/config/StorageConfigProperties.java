@@ -1,0 +1,18 @@
+package com.demo.dl.ocr.platform.config;
+
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+/** RustFS (S3兼容) 存储配置属性 */
+@Data
+@Component
+@ConfigurationProperties(prefix = "storage")
+public class StorageConfigProperties {
+
+  private String endpoint;
+  private String accessKey;
+  private String secretKey;
+  private String bucket;
+  private String region = "us-east-1";
+}

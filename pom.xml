@@ -63,6 +63,7 @@
         <module>algorithm</module>
         <module>cache</module>
         <module>jrebel-license-server</module>
+        <module>ocr-platform</module>
     </modules>
 
     <properties>
@@ -130,6 +131,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <compilerArgs>--enable-preview</compilerArgs>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.springframework.boot</groupId>

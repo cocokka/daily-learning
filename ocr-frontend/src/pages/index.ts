@@ -1,0 +1,7 @@
+export { HomePage } from './Home'
+export { UploadPage } from './Upload'
+export { TextOcrPage } from './TextOcrPage'
+export { LicensePlatePage } from './LicensePlatePage'
+export { HistoryPage } from './History'
+export { ResultPage } from './Result'
+export { NotFoundPage } from './NotFound'
